@@ -8,32 +8,14 @@ using System.Threading.Tasks;
 
 namespace MLB_Stats
 {
-    class Program
+    internal class Stats
     {
-        private static readonly HttpClient client = new HttpClient();
 
-        static async Task Main(string[] args)
-        {
-            menu();
-
-
-
-
-  //          await ProcessRepositories();
-        }
-
-       public static void menu()
-        {
-            // print out the menu and call the correct methods
-
-            // Enter into specific categories...
-        }
-        
-        
-        
         // See https://aka.ms/new-console-template for more information
 
- /*       private static async Task ProcessRepositories()
+        private static readonly HttpClient client = new HttpClient();
+
+        private static async Task ProcessRepositories()
         {
             client.DefaultRequestHeaders.Accept.Clear();
             client.DefaultRequestHeaders.Accept.Add(
@@ -47,11 +29,7 @@ namespace MLB_Stats
             Console.Write(msg);
 
             Console.ReadLine();
- 
-        }
-    */
-        }
- 
 
-
+        }
+    }   
 }
