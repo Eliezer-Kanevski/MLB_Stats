@@ -6,6 +6,11 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 
+
+//*****************
+//  create formatter class?
+//  ***************
+
 namespace MLB_Stats
 {
     internal class Stats
@@ -31,5 +36,24 @@ namespace MLB_Stats
             Console.ReadLine();
 
         }
+
+        public static void getScorecard()
+        {
+
+        }
+
+        public static async Task GetTodaysSchedule()
+        {
+            http://statsapi.mlb.com/api/v1/schedule/games/?sportId=1
+            var stringTask = client.GetStringAsync("http://statsapi.mlb.com/api/v1/schedule/games/?sportId=1");
+
+            var msg = await stringTask;
+
+            // Need to format the msg.
+            Console.Write(msg);
+
+        }
+
+
     }   
 }

@@ -14,12 +14,15 @@ namespace MLB_Stats
 
         static async Task Main(string[] args)
         {
-            menu();
+           
+            Stats.GetTodaysSchedule(); 
+            //    menu();
 
 
 
 
-  //          await ProcessRepositories();
+            //          await ProcessRepositories();
+            Console.ReadLine();
         }
 
        public static void menu()
