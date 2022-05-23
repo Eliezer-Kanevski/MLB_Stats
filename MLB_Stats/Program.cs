@@ -14,14 +14,20 @@ namespace MLB_Stats
 
         static async Task Main(string[] args)
         {
-           
-            Stats.GetTodaysSchedule(); 
-            //    menu();
 
+
+            //Stats.GetTodaysSchedule();                                    WORKS
+            //Stats.GetScheduleForSpecifiedDates("20220504", "20220505");   WORKS
+            //Stats.GetTodaysSchedule();                                    WORKS
+            //Stats.getATeamsInfo("Yankees");
+            //    menu();
+            Stats.viewTeams();
+            Stats.getATeamsInfo(140);
 
 
 
             //          await ProcessRepositories();
+            Console.WriteLine("-------END OF MAIN-------");
             Console.ReadLine();
         }
 
