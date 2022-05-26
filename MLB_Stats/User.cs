@@ -6,15 +6,17 @@ using System.Threading.Tasks;
 
 namespace MLB_Stats
 {
-    internal class User
+    public class User
     {
-        public String UserName { get; set; }
+        //---PROXY---
+        public String UserName { get; private set; }
         public String Password { get; private set; }
         public int FavoriteTeam { get; set; }
         public List<int> TeamsFollowing { get; set; }
         //public List<String> FavoritePlayers { get; set; }
         public static List<User> users = new List<User>();
     
+        //transform password to hash
         public User(string userName, string password, int favoriteTeam, List<int> teamsFollowing)
         {
             foreach(User user in users)
@@ -23,6 +25,7 @@ namespace MLB_Stats
                 {
                     Console.WriteLine("This username is already taken, please try a different username.");
                     Program.addUser(password, favoriteTeam, teamsFollowing);
+                    break;
                 }
             }
                       

@@ -20,8 +20,10 @@ using Newtonsoft.Json;
 */
 namespace MLB_Stats
 {
-    internal class Stats
+    public class Stats
     {
+
+        private Stats(){}
 
         public static  Dictionary<string, int> teamCodes = new Dictionary<string, int>()
         {
@@ -43,7 +45,7 @@ namespace MLB_Stats
 
        
         public static void getScoreboard()
-        {
+        { 
             Console.WriteLine("Enter a year in the form yyyy, then enter a month in the form mm, and then enter a date in the form dd");
            
             DateTime date = DateTime.Now;
@@ -67,19 +69,34 @@ namespace MLB_Stats
 
         public static async Task GetScheduleForSpecifiedDates(String startDate, String endDate)
         {
+            
+            try
+            {
+                if (startDate.Length != 8 || endDate.Length != 8) { throw new Exception("Invalid dates"); }
+                int sDay = Int32.Parse(startDate.Substring(6, 2));
+                int sMonth = Int32.Parse(startDate.Substring(4, 2));
+                int sYear = Int32.Parse(startDate.Substring(0, 4));
+                int eDay = Int32.Parse(endDate.Substring(6, 2));
+                int eMonth = Int32.Parse(endDate.Substring(4, 2));
+                int eYear = Int32.Parse(endDate.Substring(0, 4));
+                if (sDay < 1 || sDay > 31 || eDay < 1 || eDay > 31) { throw new Exception("Invalid day entered\n"); }
+                if (sMonth < 1 || sMonth > 12 || eMonth < 1 || eMonth > 12) { throw new Exception("Invalid month entered\n"); }
+                if (sYear < 2021 || sYear > 2022 || eYear < 2021 || eYear > 2022) { throw new Exception("Invalid year entered\n"); }
+            }
+
+            catch (Exception e) { Console.WriteLine(e.Message); }
 
             startDate = startDate.Substring(0, 4) + "-" + startDate.Substring(4,2) + "-" + startDate.Substring(6, 2);
             endDate = endDate.Substring(0,4) + "-" + endDate.Substring(4, 2) + "-" + endDate.Substring(6, 2);
-            Console.WriteLine("Start statement " + startDate);
-            Console.WriteLine("end date = " + endDate);
             //  Need to test for valid input in the form yyyy, mm, dd
-            //    var stringTask = client.GetStringAsync("http://statsapi.mlb.com/api/v1/schedule/games/?sportId=1&startDate=" + year + "-" + month + "-" + day +"&endDate=2019-09-29");
             var stringTask = client.GetStringAsync("http://statsapi.mlb.com/api/v1/schedule/games/?sportId=1&startDate=" + startDate + "&endDate=" + endDate);
 
             var msg = await stringTask;
 
             // Need to format the msg.
             Console.Write(msg);
+
+
 
         }
 

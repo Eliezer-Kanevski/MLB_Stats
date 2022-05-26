@@ -44,11 +44,13 @@ namespace MLB_Stats
         static User currentUser;
         public static void menu()
         {
+
+            //***FACADE***
             int choice = 0;
             while (true)
             {
                 // print out the menu and call the correct methods
-                Console.WriteLine("Enter 1 to view how this application works");
+                Console.WriteLine("Enter 0 to view how this application works");
                 Console.WriteLine("Enter 1 to create an account");
                 Console.WriteLine("Enter 2 to login to your account");
                 Console.WriteLine("Enter 3 to delete your account");
@@ -56,7 +58,7 @@ namespace MLB_Stats
                 Console.WriteLine("Enter 5 to get your teams information");
                 Console.WriteLine("Enter 6 to to get any teams information");
                 Console.WriteLine("Enter 7 to get today's schedule");
-                Console.WriteLine("Enter 8 to get a schedule for a specific date");
+                Console.WriteLine("Enter 8 to get a schedule for a specific set of dates");
                 Console.WriteLine("Enter 9 to exit the program");
              /*   Console.WriteLine("Enter 10");
                 Console.WriteLine("Enter 11");
@@ -102,7 +104,7 @@ namespace MLB_Stats
                         Stats.GetTodaysSchedule();
                         break;
                     case 8:
-                        Console.WriteLine("enter a start and end date in the form YYYYMMDD");
+                        Console.WriteLine("Enter a start and end date in the form YYYYMMDD");
                         String start = Console.ReadLine();
                         String end = Console.ReadLine();
                         Stats.GetScheduleForSpecifiedDates(start, end);
