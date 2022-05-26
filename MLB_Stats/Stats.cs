@@ -94,6 +94,18 @@ namespace MLB_Stats
                 Console.Write(teamInfo);
                 return;
             }
+            else
+            {
+                try
+                {
+                    int code =  Int32.Parse(name);
+                    getATeamsInfo(code);
+                }
+                catch{
+                    Console.WriteLine("Invalid team name or code.");
+                }
+            }
+
             Console.WriteLine("The name provided either has incorrect spelling, or the team does not exist. Please click to view the teams and try again.");
 
         }
