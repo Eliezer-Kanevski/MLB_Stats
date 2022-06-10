@@ -21,7 +21,7 @@ namespace MLB_Stats.UnitTests
            // Assert.That 
         }
     }
-
+     
     [TestClass]
     public class UserTests
     {
