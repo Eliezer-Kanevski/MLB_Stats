@@ -19,7 +19,7 @@ namespace MLB_Stats.UnitTests
             //Assert.ThrowsException<ArgumentException>(() =>
             //Assert.ThrowsException()
            // Assert.That 
-        }
+        } 
     }
      
     [TestClass]
