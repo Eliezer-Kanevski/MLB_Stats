@@ -4,13 +4,14 @@ using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace MLB_Stats
 {
-    class Program
+    public class Program
     {
-        private static readonly HttpClient client = new HttpClient();
+        protected static readonly HttpClient client = new HttpClient();
 
         static async Task Main(string[] args)
         {
@@ -42,6 +43,8 @@ namespace MLB_Stats
             Console.ReadLine();
         }
         static User currentUser;
+        static bool loggedIn;
+
         public static void menu()
         {
 
@@ -99,6 +102,7 @@ namespace MLB_Stats
                         Console.WriteLine("Enter a team name or code");
                         dynamic team = Console.ReadLine();
                         Stats.getATeamsInfo(team);
+
                         break;
                     case 7:
                         Stats.GetTodaysSchedule();
@@ -131,108 +135,125 @@ namespace MLB_Stats
 
 
                 }
+                //Thread.CurrentThread.Join();
+
             }
 
-                // Enter into specific categories...
-         }
+            // Enter into specific categories...
+        }
 
 
         public static void getAppInfo()
         {
-            Console.WriteLine("Information coming soon. ");
+            Console.WriteLine("Information coming soon... ");
         }
-            public static void addUser()
+        public static void addUser()
+        {
+            Console.WriteLine("Please enter a username");
+            String userName = Console.ReadLine();
+            Console.WriteLine("Please enter a password");
+            String password = Console.ReadLine();
+            Stats.viewTeams();
+            int favorite;
+            while (true)
             {
-                Console.WriteLine("Please enter a username");
-                String userName = Console.ReadLine();
-                Console.WriteLine("Please enter a password");
+                Console.WriteLine("Enter your favorite team's code");
+                favorite = Convert.ToInt32(Console.ReadLine());
+                if (Stats.teamCodes.ContainsValue(favorite))
+                {
+                    break;
+                }
+
+            }
+            Console.WriteLine("To follow multiple teams, please enter as many team codes as desired. When completed, please enter 0");
+            int codes = -1;
+            List<int> teamsFollowing = new List<int>();
+            while (codes != 0)
+            {
+                Console.WriteLine("Enter code here: ");
+                codes = Convert.ToInt32(Console.ReadLine());
+                if (codes == 0) break;
+                teamsFollowing.Add(codes);
+            }
+            User newUser = new User(userName, password, favorite, teamsFollowing);
+            loggedIn = true;
+            currentUser = newUser;
+        }
+
+
+
+        public static void addUser(string password, int favoriteTeam, List<int> teamsFollowing)
+        {
+            Console.WriteLine("Please enter a username");
+            String userName = Console.ReadLine();
+            User newUser = new User(userName, password, favoriteTeam, teamsFollowing);
+            loggedIn = true;
+            currentUser = newUser;
+        }
+
+
+        public static void login()
+        {
+            if (loggedIn)
+                {
+                    loggedIn = false;
+                    currentUser = null;
+            }
+
+            for(int i = 0; i < 3; i++)
+            {
+                Console.WriteLine("Please enter your username, then passwors separately.");
+                String username = Console.ReadLine();
                 String password = Console.ReadLine();
-                Stats.viewTeams();
-                int favorite;
-                while (true)
+
+
+                foreach (User user in User.users)
                 {
-                    Console.WriteLine("Enter your favorite team's code");
-                    favorite = Convert.ToInt32(Console.ReadLine());
-                    if (Stats.teamCodes.ContainsValue(favorite))
+                    if (user.UserName == username && user.Password == password)
                     {
-                        break;
+                        currentUser = user;
+                        loggedIn = true;
+                        Console.WriteLine("successfully logged in\n");
+                        return;
                     }
 
                 }
-                Console.WriteLine("To follow multiple teams, please enter as many team codes as desired. When completed, please enter 0");
-                int codes = -1;
-                List<int> teamsFollowing = new List<int>();
-                while (codes != 0)
-                {
-                    Console.WriteLine("Enter code here: ");
-                    codes = Convert.ToInt32(Console.ReadLine());
-                    if (codes == 0) break;
-                    teamsFollowing.Add(codes);
-                }
-                new User(userName, password, favorite, teamsFollowing);
+                Console.WriteLine("Invalid user.");
+                Console.WriteLine("Enter menu if you want to go to the menu, otherwise, enter a key to try again.");
+                String leave = Console.ReadLine();
+                if (leave.ToLower() == "menu") break;
             }
 
+        }
 
-
-            public static void addUser(string password, int favoriteTeam, List<int> teamsFollowing)
-            {
-                Console.WriteLine("Please enter a username");
-                String userName = Console.ReadLine();
-                new User(userName, password, favoriteTeam, teamsFollowing);
+        public static void deleteAccount()
+        {
+            if (!loggedIn) { 
+                login(); 
+                return; 
             }
-
-
-            public static void login()
+            for (int i = 0; i < 3; i++)
             {
-                while (true)
+                Console.WriteLine("Please enter your username, then password separately.");
+                String username = Console.ReadLine();
+                String password = Console.ReadLine();
+
+                if(username == currentUser.UserName && password == currentUser.Password)
                 {
-                    Console.WriteLine("Please enter your username, then passwors separately.");
-                    String username = Console.ReadLine();
-                    String password = Console.ReadLine();
-
-
-                    foreach (User user in User.users)
-                    {
-                        if (user.UserName == username && user.Password == password)
-                        {
-                            currentUser = user;
-                            Console.WriteLine("successfully logged in\n");
-                            return;
-                        }
-
-                    }
-                    Console.WriteLine("Invalid user.");
-                    Console.WriteLine("Enter menu if you want to go to the menu, otherwise, enter a key to try again.");
-                    String leave = Console.ReadLine();
-                    if (leave.ToLower() == "menu") break;
+                    User.users.Remove(currentUser);
+                    loggedIn = false;
+                    currentUser = null;
+                    break;
                 }
 
+                
+                Console.WriteLine("Username or password is incorrect, please try again");
+                Console.WriteLine("Enter menu if you want to go to the menu, otherwise, enter a key to try again.");
+                String leave = Console.ReadLine();
+                if (leave.ToLower() == "menu") break;
             }
 
-            public static void deleteAccount()
-            {
-                while (true)
-                {
-                    Console.WriteLine("Please enter your username, then passwors separately.");
-                    String username = Console.ReadLine();
-                    String password = Console.ReadLine();
-
-                    foreach (User user in User.users)
-                    {
-                        if (user.UserName == username && user.Password == password)
-                        {
-                            currentUser = user;
-                            User.users.Remove(user);
-                            break;
-                        }
-                    }
-                    Console.WriteLine("Invalid user, please try again");
-                    Console.WriteLine("Enter menu if you cannot find the account and want to go to the menu, otherwise, enter a key to try again.");
-                    String leave = Console.ReadLine();
-                    if (leave.ToLower() == "menu") break;
-                }
-
-            }
+        }
 
              
 

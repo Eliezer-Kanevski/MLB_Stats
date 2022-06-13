@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 //using System.Text.Json.JsonSerializer;
 using System.Text.Json.Serialization;
 using Newtonsoft.Json;
+using System.Threading;
 
 //*****************
 //  create formatter class?
@@ -102,7 +103,9 @@ namespace MLB_Stats
 
         public static async Task getATeamsInfo(String name)
         {
-            // review to lower everything.
+            name = formatName(name);
+                
+            Console.WriteLine("NAME = " + name);
             if (teamCodes.ContainsKey(name))
             {
                 int codes = teamCodes[name];
@@ -125,6 +128,8 @@ namespace MLB_Stats
 
             Console.WriteLine("The name provided either has incorrect spelling, or the team does not exist. Please click to view the teams and try again.");
 
+            //Thread.CurrentThread.Join();
+            
         }
 
         public static async Task getATeamsInfo(int code)
@@ -179,7 +184,16 @@ namespace MLB_Stats
             Console.WriteLine("Alternatively, you can enter the team code to view the team's information");
         }
 
-       
+       public static String formatName(String name)
+        {
+            name =
+                string.Join(" ", name.ToLower().Split(' ').ToList()
+                .ConvertAll(word =>
+                        word.Substring(0, 1).ToUpper() + word.Substring(1)
+                )
+            );
+            return name;
+        }
 
     }   
 }
